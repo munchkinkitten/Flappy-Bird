@@ -1,0 +1,16 @@
+cmake_minimum_required(VERSION 3.5)
+project(FLAPPY_BIRD LANGUAGES CXX)
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+include(flags)
+
+set(FLAPPY_BIRD_PROJECT_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
+set(FLAPPY_BIRD_SOURCES_ROOT FLAPPY_BIRD_PROJECT_ROOT}/src)
+set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/FlappyBird/")
+
+include_directories("include/")
+add_subdirectory(src)
+
+install(DIRECTORY "./resources" DESTINATION "./")
