@@ -3,6 +3,7 @@
 
 class Background;
 class Bird;
+class PipeController;
 
 class Game
 {
@@ -10,6 +11,7 @@ private:
     Background* backgroud;
     sf::RenderWindow window;
     Bird* bird;
+    PipeController* pipe_controller;
 
     Game();
 

@@ -2,12 +2,15 @@
 #include <bird.hpp>
 #include <background.hpp>
 #include <iostream>
+#include <pipe_controller.hpp>
 
 Game::Game() : window(sf::VideoMode(900, 504), "Flappy Bird", sf::Style::Close)
 {
     backgroud = new Background("resources/images/background.png");
     window.setFramerateLimit(60);
     bird = new Bird();
+    pipe_controller = new PipeController();
+    //pipe = new Pipe();
 }
 
 Game& Game::instance()
@@ -62,5 +65,6 @@ Game::~Game()
 {
     delete backgroud;
     delete bird;
+    delete pipe_controller;
     backgroud = nullptr;
 }
