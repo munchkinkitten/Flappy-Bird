@@ -1,6 +1,6 @@
 #include <pipe.hpp>
 
-std::size_t hole_height = 140;
+std::size_t hole_height = 160;
 std::size_t half_hole_height = hole_height / 2;
 
 

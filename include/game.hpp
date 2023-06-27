@@ -4,6 +4,7 @@
 class Background;
 class Bird;
 class PipeController;
+class CollisionsChecker;
 
 class Game
 {
@@ -12,6 +13,9 @@ private:
     sf::RenderWindow window;
     Bird* bird;
     PipeController* pipe_controller;
+    CollisionsChecker* collisions_checker;
+    class Texture* game_over_texture;
+    bool is_game_over = false;
 
     Game();
 
@@ -24,7 +28,7 @@ public:
 
     void run();
 
-    void game_over ();
+    void game_over();
 
     sf::RenderWindow& get_window();
 

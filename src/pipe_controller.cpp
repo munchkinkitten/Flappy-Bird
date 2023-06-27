@@ -1,11 +1,6 @@
 #include <game.hpp>
-#include <iostream>
-#include <map>
 #include <pipe.hpp>
 #include <pipe_controller.hpp>
-#include <set>
-#include <vector>
-
 
 PipeController::PipeController()
 {
@@ -92,7 +87,7 @@ void PipeController::render(sf::RenderWindow& window)
     }
 }
 
-PipeController::~PipeController()
+void PipeController::clear_pipes()
 {
     for (auto ell : pipes_list)
     {
@@ -100,4 +95,15 @@ PipeController::~PipeController()
     }
 
     pipes_list.clear();
+}
+
+std::list<Pipe*>& PipeController::get_pipes_list()
+{
+    return pipes_list;
+}
+
+
+PipeController::~PipeController()
+{
+    clear_pipes();
 }

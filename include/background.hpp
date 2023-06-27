@@ -12,6 +12,5 @@ public:
     Background(const char* path);
 
     void update() override;
-
     void render(sf::RenderWindow& window) override;
 };

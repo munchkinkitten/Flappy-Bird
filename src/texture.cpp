@@ -13,7 +13,7 @@ void Texture::open(const char* filename)
     image.loadFromFile(filename);
     texture.loadFromImage(image);
     sprite.setTexture(texture);
-    set_position(sf::Vector2f(texture.getSize().x / 2, texture.getSize().y / 2));
+    set_position({0, 0});
 }
 
 sf::Vector2u Texture::size()
@@ -21,15 +21,20 @@ sf::Vector2u Texture::size()
     return texture.getSize();
 }
 
+sf::Vector2f Texture::sizef()
+{
+    return {(float)texture.getSize().x, (float)texture.getSize().y};
+}
+
+
 const sf::Vector2f& Texture::get_position()
 {
-    return position;
+    return sprite.getPosition();
 }
 
 void Texture::set_position(sf::Vector2f pos)
 {
-    position = pos;
-    sprite.setPosition(sf::Vector2f(pos.x - texture.getSize().x / 2, pos.y - texture.getSize().y / 2));
+    sprite.setPosition(pos);
 }
 
 void Texture::render(sf::RenderWindow& window)

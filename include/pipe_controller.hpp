@@ -23,5 +23,9 @@ public:
 
     void render(sf::RenderWindow& window) override;
 
+    void clear_pipes();
+
+    std::list<Pipe*>& get_pipes_list();
+
     ~PipeController();
 };

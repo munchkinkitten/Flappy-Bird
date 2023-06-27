@@ -8,7 +8,6 @@ private:
     sf::Image image;
     sf::Texture texture;
     sf::Sprite sprite;
-    sf::Vector2f position;
 
 public:
     Texture();
@@ -18,6 +17,7 @@ public:
     void open(const char* filename);
 
     sf::Vector2u size();
+    sf::Vector2f sizef();
 
     const sf::Vector2f& get_position();
 

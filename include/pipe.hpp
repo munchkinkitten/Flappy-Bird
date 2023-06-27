@@ -19,5 +19,15 @@ public:
 
     const sf::Vector2f& get_position();
 
+    inline const sf::Sprite& get_top() const
+    {
+        return top;
+    }
+
+    inline const sf::Sprite& get_bottom() const
+    {
+        return bottom;
+    }
+
     void set_position(sf::Vector2f pos);
 };
