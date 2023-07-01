@@ -26,6 +26,17 @@ sf::Vector2f Texture::sizef()
     return {(float)texture.getSize().x, (float)texture.getSize().y};
 }
 
+void Texture::set_rotation(float degree)
+{
+    sprite.setRotation(degree);
+}
+
+void Texture::set_rotation(float degree, const sf::Vector2f& origin)
+{
+    sprite.setOrigin(origin);
+    set_rotation(degree);
+    sprite.setOrigin({0.0, 0.0});
+}
 
 const sf::Vector2f& Texture::get_position()
 {

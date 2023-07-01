@@ -19,6 +19,9 @@ public:
     sf::Vector2u size();
     sf::Vector2f sizef();
 
+    void set_rotation(float degree);
+    void set_rotation(float degree, const sf::Vector2f& origin);
+
     const sf::Vector2f& get_position();
 
     void set_position(sf::Vector2f pos);

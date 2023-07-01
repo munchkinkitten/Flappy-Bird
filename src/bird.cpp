@@ -1,34 +1,52 @@
 #include <bird.hpp>
+#include <cmath>
 #include <game.hpp>
+#include <iostream>
+#include <math_helpers.hpp>
 
-static constexpr float default_G = 0.3f;
+static constexpr float default_G    = 0.3f;
+static constexpr float bird_x_speed = 2.0f;
+
+extern int frame;
 
 Bird::Bird()
 {
-    bird_texture.open("resources/images/flap1.png");
+    for (int i = 1; i < 5; i++)
+    {
+        std::string filename = "resources/images/flap" + std::to_string(i) + ".png";
+        textures.push_back(new Texture(filename.c_str()));
+    }
+
     reset();
 }
 
 void Bird::render(sf::RenderWindow& window)
 {
-    bird_texture.render(window);
+    get_texture().render(window);
 }
 
 void Bird::update()
 {
+    if (frame % 30 == 0)
+    {
+        set_next_texture();
+    }
+
     speed = std::min(speed + G, max_speed);
 
-    bird_texture.set_position({bird_texture.get_position().x, bird_texture.get_position().y + speed});
+    set_rotation_angle();
 
-    if (bird_texture.get_position().y + bird_texture.size().y > Game::instance().get_window().getSize().y)
+    get_texture().set_position({get_texture().get_position().x, get_texture().get_position().y + speed});
+
+    if (get_texture().get_position().y + get_texture().size().y > Game::instance().get_window().getSize().y)
     {
         G     = 0.f;
         speed = 0;
         Game::instance().game_over();
     }
-    else if (bird_texture.get_position().y < 0)
+    else if (get_texture().get_position().y < 0)
     {
-        bird_texture.set_position({bird_texture.get_position().x, 0});
+        get_texture().set_position({get_texture().get_position().x, 0});
         speed = 0;
     }
     else if (G == 0.0f)
@@ -39,7 +57,8 @@ void Bird::update()
 
 void Bird::reset()
 {
-    bird_texture.set_position({200, 200});
+    texture_index = 0;
+    get_texture().set_position({200, 200});
     G     = default_G;
     speed = 0.0;
 }
@@ -55,12 +74,63 @@ void Bird::check_event(const sf::Event& event)
     }
 }
 
+static float dot(const sf::Vector2f& vec1, const sf::Vector2f& vec2)
+{
+    float a = vec1.x * vec2.x + vec1.y * vec2.y;
+    float b = length(vec1) * length(vec2);
+    return a / b;
+}
+
+float radiand_to_degrees(float radians)
+{
+    return radians * (180.0f / M_PI);
+}
+
+void Bird::set_rotation_angle()
+{
+    static const sf::Vector2f OX = {1.0, 0.0};
+
+    auto current_pos   = get_texture().get_position();
+    auto next_position = current_pos + sf::Vector2f(bird_x_speed, speed);
+    auto move_vector   = next_position - current_pos;
+
+    float tmp_angle = radiand_to_degrees(std::acos(dot(OX, move_vector)));
+
+    if (speed < 0)
+    {
+        tmp_angle = -tmp_angle;
+    }
+
+    angle = angle * 0.95 + tmp_angle * 0.05;
+
+    auto origin = get_texture().sizef() / 2.0f;
+    std::clog << origin.x << " " << origin.y << std::endl;
+
+    get_texture().set_rotation(angle, origin);
+}
+
+void Bird::set_next_texture()
+{
+    size_t next_index = (texture_index + 1) % textures.size();
+
+    sf::Vector2f position = textures[texture_index]->get_position();
+    textures[next_index]->set_position(position);
+    texture_index = next_index;
+}
+
 Texture& Bird::get_texture()
 {
-    return bird_texture;
+    return *textures[texture_index];
 }
 
 void Bird::jump()
 {
-    speed = -7;
+    speed = -6.5;
+}
+
+
+Bird::~Bird()
+{
+    for(Texture* texture : textures)
+        delete texture;
 }

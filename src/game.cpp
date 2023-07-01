@@ -5,6 +5,7 @@
 #include <iostream>
 #include <pipe_controller.hpp>
 
+int frame = 0;
 
 Game::Game() : window(sf::VideoMode(900, 504), "Flappy Bird", sf::Style::Close)
 {
@@ -66,6 +67,7 @@ void Game::run()
 
     while (window.isOpen())
     {
+        frame++;
         update_events();
 
         // Етап малювання вікна з урахуванням обробки подій клавіатури
@@ -90,6 +92,7 @@ void Game::game_over()
     backgroud->set_update_status(false);
     collisions_checker->set_update_status(false);
     is_game_over = true;
+    //frame = 0;
 }
 
 sf::RenderWindow& Game::get_window()
