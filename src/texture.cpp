@@ -1,4 +1,5 @@
 #include <texture.hpp>
+#include <iostream>
 
 Texture::Texture()
 {}
@@ -31,21 +32,19 @@ void Texture::set_rotation(float degree)
     sprite.setRotation(degree);
 }
 
-void Texture::set_rotation(float degree, const sf::Vector2f& origin)
+sf::Vector2f Texture::get_position()
 {
-    sprite.setOrigin(origin);
-    set_rotation(degree);
-    sprite.setOrigin({0.0, 0.0});
-}
-
-const sf::Vector2f& Texture::get_position()
-{
-    return sprite.getPosition();
+    return sprite.getPosition() - sprite.getOrigin();
 }
 
 void Texture::set_position(sf::Vector2f pos)
 {
-    sprite.setPosition(pos);
+    sprite.setPosition(pos + sprite.getOrigin());
+}
+
+void Texture::set_origin(const sf::Vector2f& origin)
+{
+    sprite.setOrigin(origin);
 }
 
 void Texture::render(sf::RenderWindow& window)

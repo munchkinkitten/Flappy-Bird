@@ -40,7 +40,7 @@ void Game::update_events()
 
         if (is_game_over)
         {
-            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Space)
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Enter)
             {
                 is_game_over = false;
                 pipe_controller->clear_pipes();

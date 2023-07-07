@@ -20,11 +20,11 @@ public:
     sf::Vector2f sizef();
 
     void set_rotation(float degree);
-    void set_rotation(float degree, const sf::Vector2f& origin);
 
-    const sf::Vector2f& get_position();
+    sf::Vector2f get_position();
 
     void set_position(sf::Vector2f pos);
+    void set_origin(const sf::Vector2f& origin);
 
     void render(sf::RenderWindow& window);
 };

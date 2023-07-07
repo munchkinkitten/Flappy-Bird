@@ -15,6 +15,8 @@ Bird::Bird()
     {
         std::string filename = "resources/images/flap" + std::to_string(i) + ".png";
         textures.push_back(new Texture(filename.c_str()));
+        auto origin = textures.back()->sizef() / 2.0f;
+        textures.back()->set_origin(origin);
     }
 
     reset();
@@ -23,6 +25,13 @@ Bird::Bird()
 void Bird::render(sf::RenderWindow& window)
 {
     get_texture().render(window);
+    // Render box
+    sf::VertexArray lines(sf::LinesStrip, 4);
+    lines[0].position = get_texture().get_position();
+    lines[1].position = get_texture().get_position() + sf::Vector2f(get_texture().sizef().x, 0.f);
+    lines[2].position = get_texture().get_position() + get_texture().sizef();
+    lines[3].position = get_texture().get_position() + sf::Vector2f(0.f, get_texture().sizef().y);
+    window.draw(lines);
 }
 
 void Bird::update()
@@ -61,6 +70,7 @@ void Bird::reset()
     get_texture().set_position({200, 200});
     G     = default_G;
     speed = 0.0;
+    jump();
 }
 
 void Bird::check_event(const sf::Event& event)
@@ -103,10 +113,8 @@ void Bird::set_rotation_angle()
 
     angle = angle * 0.95 + tmp_angle * 0.05;
 
-    auto origin = get_texture().sizef() / 2.0f;
-    std::clog << origin.x << " " << origin.y << std::endl;
 
-    get_texture().set_rotation(angle, origin);
+    get_texture().set_rotation(angle);
 }
 
 void Bird::set_next_texture()
