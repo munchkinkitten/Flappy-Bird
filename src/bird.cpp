@@ -26,17 +26,17 @@ void Bird::render(sf::RenderWindow& window)
 {
     get_texture().render(window);
     // Render box
-    sf::VertexArray lines(sf::LinesStrip, 4);
-    lines[0].position = get_texture().get_position();
-    lines[1].position = get_texture().get_position() + sf::Vector2f(get_texture().sizef().x, 0.f);
-    lines[2].position = get_texture().get_position() + get_texture().sizef();
-    lines[3].position = get_texture().get_position() + sf::Vector2f(0.f, get_texture().sizef().y);
-    window.draw(lines);
+//    sf::VertexArray lines(sf::LinesStrip, 4);
+//    lines[0].position = get_texture().get_position();
+//    lines[1].position = get_texture().get_position() + sf::Vector2f(get_texture().sizef().x, 0.f);
+//    lines[2].position = get_texture().get_position() + get_texture().sizef();
+//    lines[3].position = get_texture().get_position() + sf::Vector2f(0.f, get_texture().sizef().y);
+//    window.draw(lines);
 }
 
 void Bird::update()
 {
-    if (frame % 30 == 0)
+    if (frame % 10 == 0)
     {
         set_next_texture();
     }

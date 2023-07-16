@@ -4,19 +4,26 @@
 #include <game.hpp>
 #include <iostream>
 #include <pipe_controller.hpp>
+#include <score_counter.hpp>
 
 int frame = 0;
 
+
 Game::Game() : window(sf::VideoMode(900, 504), "Flappy Bird", sf::Style::Close)
 {
-    backgroud = new Background("resources/images/background.png");
-    window.setFramerateLimit(60);
-    bird               = new Bird();
-    pipe_controller    = new PipeController();
-    collisions_checker = new CollisionsChecker(bird, pipe_controller->get_pipes_list());
-    game_over_texture  = new Texture("resources/images/game_over.png");
+   //pipe = new Pipe();
+}
 
-    //pipe = new Pipe();
+void Game::init()
+{
+   backgroud = new Background("resources/images/background.png");
+   window.setFramerateLimit(60);
+   bird               = new Bird();
+   pipe_controller    = new PipeController();
+   collisions_checker = new CollisionsChecker(bird, pipe_controller->get_pipes_list());
+   game_over_texture  = new Texture("resources/images/game_over.png");
+   score_counter = new ScoreCounter();
+
 }
 
 Game& Game::instance()
@@ -48,7 +55,9 @@ void Game::update_events()
                 pipe_controller->set_update_status(true);
                 backgroud->set_update_status(true);
                 collisions_checker->set_update_status(true);
+                score_counter->set_update_status(true);
                 bird->reset();
+                score_counter->reset();
             }
         }
 
@@ -60,6 +69,7 @@ void Game::update_events()
 void Game::run()
 {
 
+    init();
     auto g_over_size = game_over_texture->sizef() / 2.0f;
 
     game_over_texture->set_position({float(Game::instance().get_window().getSize().x / 2) - g_over_size.x,
@@ -91,6 +101,7 @@ void Game::game_over()
     pipe_controller->set_update_status(false);
     backgroud->set_update_status(false);
     collisions_checker->set_update_status(false);
+    score_counter->set_update_status(false);
     is_game_over = true;
     //frame = 0;
 }
@@ -100,12 +111,24 @@ sf::RenderWindow& Game::get_window()
     return window;
 }
 
+Bird* Game::get_bird()
+{
+    return bird;
+}
+
+PipeController* Game::get_pipe_controller()
+{
+    return pipe_controller;
+}
+
+
 Game::~Game()
 {
     delete backgroud;
     delete bird;
     delete pipe_controller;
     delete collisions_checker;
+    delete score_counter;
     delete game_over_texture;
     backgroud = nullptr;
 }

@@ -43,6 +43,7 @@ void PipeController::push_pipe(Pipe* pipe)
         pipe->set_position(position);
     }
 
+    pipe->set_complete(false);
     pipes_list.push_back(pipe);
 }
 

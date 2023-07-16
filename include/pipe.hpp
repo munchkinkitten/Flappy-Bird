@@ -11,6 +11,7 @@ private:
     sf::Sprite top;
     sf::Sprite bottom;
     sf::Vector2f position;
+    bool completed = false;
 
 public:
     Pipe(const sf::Texture& texture, sf::Vector2f position);
@@ -27,6 +28,16 @@ public:
     inline const sf::Sprite& get_bottom() const
     {
         return bottom;
+    }
+
+    inline void set_complete(bool flag = true)
+    {
+        completed = flag;
+    }
+
+    inline bool is_completed()
+    {
+        return completed;
     }
 
     void set_position(sf::Vector2f pos);
