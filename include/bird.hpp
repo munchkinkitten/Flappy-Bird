@@ -3,6 +3,8 @@
 #include <object.hpp>
 #include <texture.hpp>
 #include <list>
+#include <SFML/Audio/SoundBuffer.hpp>
+#include <SFML/Audio/Sound.hpp>
 
 class Pipe;
 
@@ -11,6 +13,9 @@ class Bird : public Object
 private:
     size_t texture_index = 0;
     std::vector<Texture*> textures;
+
+    sf::SoundBuffer jump_sb;
+    sf::Sound jump_sound;
 
     float angle =0.f;
     float speed = 0.f;

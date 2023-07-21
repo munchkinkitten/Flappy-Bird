@@ -52,7 +52,7 @@ bool CollisionsChecker::check_collisions()
         p3.x -= s3.x;
         p3.y -= s3.y;
 
-        if(check_collision(p1, s1, p2, s2) || check_collision(p1, s1, p3, s3))
+        if (check_collision(p1, s1, p2, s2) || check_collision(p1, s1, p3, s3))
         {
             return true;
         }

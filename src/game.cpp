@@ -11,19 +11,22 @@ int frame = 0;
 
 Game::Game() : window(sf::VideoMode(900, 504), "Flappy Bird", sf::Style::Close)
 {
-   //pipe = new Pipe();
+    //pipe = new Pipe();
 }
 
 void Game::init()
 {
-   backgroud = new Background("resources/images/background.png");
-   window.setFramerateLimit(60);
-   bird               = new Bird();
-   pipe_controller    = new PipeController();
-   collisions_checker = new CollisionsChecker(bird, pipe_controller->get_pipes_list());
-   game_over_texture  = new Texture("resources/images/game_over.png");
-   score_counter = new ScoreCounter();
+    backgroud = new Background("resources/images/background.png");
+    window.setFramerateLimit(60);
+    bird               = new Bird();
+    pipe_controller    = new PipeController();
+    collisions_checker = new CollisionsChecker(bird, pipe_controller->get_pipes_list());
+    game_over_texture  = new Texture("resources/images/game_over.png");
+    score_counter      = new ScoreCounter();
 
+    collision_sb.loadFromFile("resources/sounds/collision.wav");
+    collision_sound.setBuffer(collision_sb);
+    music.openFromFile("resources/sounds/music.wav");
 }
 
 Game& Game::instance()
@@ -60,8 +63,10 @@ void Game::update_events()
                 score_counter->reset();
             }
         }
-
-        bird->check_event(event);
+        else
+        {
+            bird->check_event(event);
+        }
     }
 }
 
@@ -70,6 +75,7 @@ void Game::run()
 {
 
     init();
+
     auto g_over_size = game_over_texture->sizef() / 2.0f;
 
     game_over_texture->set_position({float(Game::instance().get_window().getSize().x / 2) - g_over_size.x,
@@ -79,6 +85,13 @@ void Game::run()
     {
         frame++;
         update_events();
+
+        if (!(music.getStatus() == sf::SoundSource::Playing))
+        {
+            music.setVolume(60);
+            music.setLoop(true);
+            music.play();
+        }
 
         // Етап малювання вікна з урахуванням обробки подій клавіатури
         window.clear(sf::Color::White);
@@ -103,6 +116,8 @@ void Game::game_over()
     collisions_checker->set_update_status(false);
     score_counter->set_update_status(false);
     is_game_over = true;
+
+    collision_sound.play();
     //frame = 0;
 }
 

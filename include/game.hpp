@@ -1,5 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
+#include <SFML/Audio/Sound.hpp>
+#include <SFML/Audio/Music.hpp>
 
 class Background;
 class Bird;
@@ -19,6 +22,10 @@ private:
 
     class Texture* game_over_texture;
     bool is_game_over = false;
+
+    sf::SoundBuffer collision_sb;
+    sf::Sound collision_sound;
+    sf::Music music;
 
     Game();
 

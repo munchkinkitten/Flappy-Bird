@@ -15,6 +15,7 @@ private:
     Bird* bird;
     std::list<Pipe*>& pipes_list;
 
+
 public:
     CollisionsChecker(Bird* bird, std::list<Pipe*>& pipes_list);
 

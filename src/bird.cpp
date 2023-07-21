@@ -11,6 +11,9 @@ extern int frame;
 
 Bird::Bird()
 {
+    jump_sb.loadFromFile("resources/sounds/jump.wav");
+    jump_sound.setBuffer(jump_sb);
+
     for (int i = 1; i < 5; i++)
     {
         std::string filename = "resources/images/flap" + std::to_string(i) + ".png";
@@ -134,6 +137,9 @@ Texture& Bird::get_texture()
 void Bird::jump()
 {
     speed = -6.5;
+
+    //if(m_update_active)
+    jump_sound.play();
 }
 
 
