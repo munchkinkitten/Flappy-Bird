@@ -10,6 +10,13 @@ class PipeController;
 class CollisionsChecker;
 class ScoreCounter;
 
+enum class GameStage : unsigned int
+{
+    Launched = 0,
+    Playing  = 1,
+    GameOver = 2,
+};
+
 class Game
 {
 private:
@@ -21,11 +28,13 @@ private:
     ScoreCounter* score_counter;
 
     class Texture* game_over_texture;
-    bool is_game_over = false;
+    Texture* enter_to_start;
 
     sf::SoundBuffer collision_sb;
     sf::Sound collision_sound;
     sf::Music music;
+
+    GameStage m_stage;
 
     Game();
 
@@ -39,12 +48,17 @@ public:
 
     void run();
 
+    void stop_update();
     void game_over();
 
     sf::RenderWindow& get_window();
 
     Bird* get_bird();
     PipeController* get_pipe_controller();
+    inline GameStage get_stage() const
+    {
+        return m_stage;
+    }
 
     ~Game();
 };

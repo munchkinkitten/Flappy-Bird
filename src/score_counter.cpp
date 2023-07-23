@@ -44,7 +44,7 @@ void ScoreCounter::render(sf::RenderWindow& window)
     std::string number = std::to_string(score);
     // num = '2' -> 2
     int offset = 20;
-    for (int i = 0; i < number.length(); i++)
+    for (std::size_t i = 0; i < number.length(); i++)
     {
         int index = number[i] - '0';
         sprites_vec[index].setPosition({float(offset), 0});

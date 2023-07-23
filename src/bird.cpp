@@ -29,12 +29,12 @@ void Bird::render(sf::RenderWindow& window)
 {
     get_texture().render(window);
     // Render box
-//    sf::VertexArray lines(sf::LinesStrip, 4);
-//    lines[0].position = get_texture().get_position();
-//    lines[1].position = get_texture().get_position() + sf::Vector2f(get_texture().sizef().x, 0.f);
-//    lines[2].position = get_texture().get_position() + get_texture().sizef();
-//    lines[3].position = get_texture().get_position() + sf::Vector2f(0.f, get_texture().sizef().y);
-//    window.draw(lines);
+    //    sf::VertexArray lines(sf::LinesStrip, 4);
+    //    lines[0].position = get_texture().get_position();
+    //    lines[1].position = get_texture().get_position() + sf::Vector2f(get_texture().sizef().x, 0.f);
+    //    lines[2].position = get_texture().get_position() + get_texture().sizef();
+    //    lines[3].position = get_texture().get_position() + sf::Vector2f(0.f, get_texture().sizef().y);
+    //    window.draw(lines);
 }
 
 void Bird::update()
@@ -136,15 +136,17 @@ Texture& Bird::get_texture()
 
 void Bird::jump()
 {
-    speed = -6.5;
+    if (Game::instance().get_stage() == GameStage::Playing)
+    {
+        speed = -6.5;
 
-    //if(m_update_active)
-    jump_sound.play();
+        //if(m_update_active)
+        jump_sound.play();
+    }
 }
 
 
 Bird::~Bird()
 {
-    for(Texture* texture : textures)
-        delete texture;
+    for (Texture* texture : textures) delete texture;
 }

@@ -9,6 +9,7 @@
 int frame = 0;
 
 
+
 Game::Game() : window(sf::VideoMode(900, 504), "Flappy Bird", sf::Style::Close)
 {
     //pipe = new Pipe();
@@ -22,11 +23,15 @@ void Game::init()
     pipe_controller    = new PipeController();
     collisions_checker = new CollisionsChecker(bird, pipe_controller->get_pipes_list());
     game_over_texture  = new Texture("resources/images/game_over.png");
+    enter_to_start     = new Texture("resources/images/enter.png");
     score_counter      = new ScoreCounter();
 
     collision_sb.loadFromFile("resources/sounds/collision.wav");
     collision_sound.setBuffer(collision_sb);
     music.openFromFile("resources/sounds/music.wav");
+    m_stage = GameStage::Launched;
+    stop_update();
+
 }
 
 Game& Game::instance()
@@ -36,7 +41,17 @@ Game& Game::instance()
 }
 
 void Game::reset()
-{}
+{
+    m_stage = GameStage::Playing;
+    pipe_controller->clear_pipes();
+    bird->set_update_status(true);
+    pipe_controller->set_update_status(true);
+    backgroud->set_update_status(true);
+    collisions_checker->set_update_status(true);
+    score_counter->set_update_status(true);
+    bird->reset();
+    score_counter->reset();
+}
 
 void Game::update_events()
 {
@@ -48,19 +63,11 @@ void Game::update_events()
         if (event.type == sf::Event::Closed)
             window.close();
 
-        if (is_game_over)
+        if (m_stage == GameStage::GameOver || m_stage == GameStage::Launched)
         {
             if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Enter)
             {
-                is_game_over = false;
-                pipe_controller->clear_pipes();
-                bird->set_update_status(true);
-                pipe_controller->set_update_status(true);
-                backgroud->set_update_status(true);
-                collisions_checker->set_update_status(true);
-                score_counter->set_update_status(true);
-                bird->reset();
-                score_counter->reset();
+                reset();
             }
         }
         else
@@ -73,11 +80,14 @@ void Game::update_events()
 
 void Game::run()
 {
-
+    //run();
     init();
 
     auto g_over_size = game_over_texture->sizef() / 2.0f;
 
+    enter_to_start->set_position({float(Game::instance().get_window().getSize().x * 1.25 / 2) - g_over_size.x,
+                                  float(Game::instance().get_window().getSize().y * 1.5 / 2) - g_over_size.y});
+    enter_to_start->set_scale({0.2, 0.2});
     game_over_texture->set_position({float(Game::instance().get_window().getSize().x / 2) - g_over_size.x,
                                      float(Game::instance().get_window().getSize().y / 2) - g_over_size.y});
 
@@ -99,26 +109,37 @@ void Game::run()
         Object::update_all();
         Object::render_all(window);
 
-        if (is_game_over)
+        switch(m_stage)
         {
+        case GameStage::GameOver:
             game_over_texture->render(window);
+            break;
+        case GameStage::Launched:
+            enter_to_start->render(window);
+            break;
+
+        default:
+            break;
         }
 
         window.display();
     }
 }
 
-void Game::game_over()
+void Game::stop_update()
 {
     bird->set_update_status(false);
     pipe_controller->set_update_status(false);
     backgroud->set_update_status(false);
     collisions_checker->set_update_status(false);
     score_counter->set_update_status(false);
-    is_game_over = true;
+}
 
+void Game::game_over()
+{
+    m_stage = GameStage::GameOver;
     collision_sound.play();
-    //frame = 0;
+    stop_update();
 }
 
 sf::RenderWindow& Game::get_window()

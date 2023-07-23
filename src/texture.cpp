@@ -47,6 +47,11 @@ void Texture::set_origin(const sf::Vector2f& origin)
     sprite.setOrigin(origin);
 }
 
+void Texture::set_scale(const sf::Vector2f& scale)
+{
+    sprite.setScale(scale);
+}
+
 void Texture::render(sf::RenderWindow& window)
 {
     window.draw(sprite);

@@ -25,6 +25,8 @@ public:
 
     void set_position(sf::Vector2f pos);
     void set_origin(const sf::Vector2f& origin);
+    void set_scale(const sf::Vector2f& scale);
+
 
     void render(sf::RenderWindow& window);
 };
