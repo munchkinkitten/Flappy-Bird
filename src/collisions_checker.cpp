@@ -12,7 +12,7 @@ static bool check_collision(const sf::Vector2f& pos1, const sf::Vector2f& size1,
 }
 
 
-CollisionsChecker::CollisionsChecker(Bird* bird, std::list<Pipe*>& pipes_list) : bird(bird), pipes_list(pipes_list)
+CollisionsChecker::CollisionsChecker(Bird* bird, std::list<Pipe*>& pipes_list, Coin* coin) : bird(bird), pipes_list(pipes_list), coin(coin)
 {}
 
 void CollisionsChecker::update()
@@ -34,7 +34,19 @@ static sf::Vector2f to_vector_2f(const sf::Vector2u& vec)
 
 bool CollisionsChecker::check_collisions()
 {
-    int count = 0;
+    if (coin->get_texture().get_position().x - 0.5 * coin->get_texture().size().x <=
+                bird->get_texture().get_position().x &&
+        coin->get_texture().get_position().x + 1.5 * coin->get_texture().size().x >=
+                bird->get_texture().get_position().x &&
+        coin->get_texture().get_position().y - 0.5 * coin->get_texture().size().y <=
+                bird->get_texture().get_position().y &&
+        coin->get_texture().get_position().y + 1.5 * coin->get_texture().size().y >=
+                bird->get_texture().get_position().y)
+    {
+        coin->catched({pipes_list.back()->get_position().x + pipes_list.back()->get_bottom().getTexture()->getSize().x + 100 - coin->get_texture().size().x / 2, coin->get_texture().get_position().y});
+    }
+
+        int count = 0;
 
     for (auto& pipe : pipes_list)
     {

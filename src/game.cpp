@@ -9,7 +9,6 @@
 int frame = 0;
 
 
-
 Game::Game() : window(sf::VideoMode(900, 504), "Flappy Bird", sf::Style::Close)
 {
     //pipe = new Pipe();
@@ -20,8 +19,9 @@ void Game::init()
     backgroud = new Background("resources/images/background.png");
     window.setFramerateLimit(60);
     bird               = new Bird();
+    coin               = new Coin();
     pipe_controller    = new PipeController();
-    collisions_checker = new CollisionsChecker(bird, pipe_controller->get_pipes_list());
+    collisions_checker = new CollisionsChecker(bird, pipe_controller->get_pipes_list(), coin);
     game_over_texture  = new Texture("resources/images/game_over.png");
     enter_to_start     = new Texture("resources/images/enter.png");
     score_counter      = new ScoreCounter();
@@ -31,7 +31,6 @@ void Game::init()
     music.openFromFile("resources/sounds/music.wav");
     m_stage = GameStage::Launched;
     stop_update();
-
 }
 
 Game& Game::instance()
@@ -49,6 +48,7 @@ void Game::reset()
     backgroud->set_update_status(true);
     collisions_checker->set_update_status(true);
     score_counter->set_update_status(true);
+    coin->reset();
     bird->reset();
     score_counter->reset();
 }
@@ -109,17 +109,17 @@ void Game::run()
         Object::update_all();
         Object::render_all(window);
 
-        switch(m_stage)
+        switch (m_stage)
         {
-        case GameStage::GameOver:
-            game_over_texture->render(window);
-            break;
-        case GameStage::Launched:
-            enter_to_start->render(window);
-            break;
+            case GameStage::GameOver:
+                game_over_texture->render(window);
+                break;
+            case GameStage::Launched:
+                enter_to_start->render(window);
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
 
         window.display();
@@ -129,6 +129,7 @@ void Game::run()
 void Game::stop_update()
 {
     bird->set_update_status(false);
+    coin->set_update_status(false);
     pipe_controller->set_update_status(false);
     backgroud->set_update_status(false);
     collisions_checker->set_update_status(false);
@@ -162,6 +163,7 @@ Game::~Game()
 {
     delete backgroud;
     delete bird;
+    delete coin;
     delete pipe_controller;
     delete collisions_checker;
     delete score_counter;

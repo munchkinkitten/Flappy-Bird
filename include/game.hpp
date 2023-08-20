@@ -9,6 +9,7 @@ class Bird;
 class PipeController;
 class CollisionsChecker;
 class ScoreCounter;
+class Coin;
 
 enum class GameStage : unsigned int
 {
@@ -26,6 +27,7 @@ private:
     PipeController* pipe_controller;
     CollisionsChecker* collisions_checker;
     ScoreCounter* score_counter;
+    Coin* coin;
 
     class Texture* game_over_texture;
     Texture* enter_to_start;
